@@ -9,21 +9,24 @@ function startStopwatch() {
   // replace start button with stop button
 
   // start timer
-  let microseconds = 0;
-  let seconds = 0;
-  let minutes = 0;
+  let micro = 0;
+  let sec = 0;
+  let min = 0;
   setInterval(function () {
-    microseconds++;
-    if (microseconds == 100) {
-      microseconds = 0;
-      seconds++;
-      if (seconds == 60) {
-        seconds = 0;
-        minutes++;
+    micro++;
+    if (micro == 100) {
+      micro = 0;
+      sec++;
+      if (sec == 60) {
+        sec = 0;
+        min++;
       }
     }
     let txt = document.querySelector(".time-text");
-    txt.innerHTML = `${minutes} : ${seconds} : ${microseconds}`;
+    let formattedMicro = micro.toString().padStart(2, "0");
+    let formattedSec = sec.toString().padStart(2, "0");
+    let formattedMin = min.toString().padStart(2, "0");
+    txt.innerHTML = `${formattedMin} : ${formattedSec} : ${formattedMicro}`;
   }, 10);
 }
 
