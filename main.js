@@ -1,19 +1,6 @@
 // global variables
-let micro = 0;
-let sec = 0;
-let min = 0;
-
-let prevMicro = 0;
-let prevSec = 0;
-let prevMin = 0;
-
-let lapMicro = 0;
-let lapSec = 0;
-let lapMin = 0;
-
-let formattedMicro;
-let formattedMin;
-let formattedSec;
+let prevTimeStamp;
+let currTimeStamp;
 
 let startButton;
 let stopButton;
@@ -55,9 +42,9 @@ function addButton(button) {
 function removeButton(button) {}
 
 function formatTime(min, sec, micro) {
-  formattedMicro = micro.toString().padStart(2, "0");
-  formattedSec = sec.toString().padStart(2, "0");
-  formattedMin = min.toString().padStart(2, "0");
+  let formattedMicro = micro.toString().padStart(2, "0");
+  let formattedSec = sec.toString().padStart(2, "0");
+  let formattedMin = min.toString().padStart(2, "0");
   return `${formattedMin} : ${formattedSec} : ${formattedMicro}`;
 }
 
@@ -84,6 +71,8 @@ function startStopwatch() {
   // replace start button with stop button
 
   // start timer
+  prevTimeStamp = Date.now();
+  currTimeStamp = Date.now();
   intervalID = setInterval(function () {
     micro++;
     if (micro == 100) {
