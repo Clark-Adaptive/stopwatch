@@ -1,17 +1,17 @@
 // global variables
-let micro = 0;
+let centi = 0;
 let sec = 0;
 let min = 0;
 
-let prevMicro = 0;
+let prevcenti = 0;
 let prevSec = 0;
 let prevMin = 0;
 
-let lapMicro = 0;
+let lapcenti = 0;
 let lapSec = 0;
 let lapMin = 0;
 
-let formattedMicro;
+let formattedcenti;
 let formattedMin;
 let formattedSec;
 
@@ -20,7 +20,8 @@ let stopButton;
 let lapButton;
 let resetButton;
 
-let buttonContainer;
+let leftButtonContainer;
+let rightButtonContainer;
 let lapContainer;
 let intervalID;
 
@@ -47,35 +48,35 @@ function createStartStopButtons() {
   resetButton.addEventListener("click", reset);
 }
 
-function addButton(button) {
+function addButton(buttonContainer, button) {
   // TODO: depending on whether the button is supposed to be on the left or the right, append or insert
   buttonContainer.appendChild(button);
 }
 
 function removeButton(button) {}
 
-function formatTime(min, sec, micro) {
-  formattedMicro = micro.toString().padStart(2, "0");
+function formatTime(min, sec, centi) {
+  formattedcenti = centi.toString().padStart(2, "0");
   formattedSec = sec.toString().padStart(2, "0");
   formattedMin = min.toString().padStart(2, "0");
-  return `${formattedMin} : ${formattedSec} : ${formattedMicro}`;
+  return `${formattedMin} : ${formattedSec} : ${formattedcenti}`;
 }
 
-function convertToMicro(min, sec, micro) {
+function convertTocenti(min, sec, centi) {
   let minToSec = min * 60;
-  let secToMicro = (sec + minToSec) * 100;
-  let totalMicro = secToMicro + micro;
-  return totalMicro;
+  let secTocenti = (sec + minToSec) * 100;
+  let totalcenti = secTocenti + centi;
+  return totalcenti;
 }
 
-function convertFromMicro(totalMicro) {
-  let newMin = Math.floor(totalMicro / 6000);
-  totalMicro -= newMin * 6000; // 1
-  let newSec = Math.floor(totalMicro / 100);
-  totalMicro -= newSec * 100; // 1
-  let newMicro = totalMicro; // 35
+function convertFromcenti(totalcenti) {
+  let newMin = Math.floor(totalcenti / 6000);
+  totalcenti -= newMin * 6000; // 1
+  let newSec = Math.floor(totalcenti / 100);
+  totalcenti -= newSec * 100; // 1
+  let newcenti = totalcenti; // 35
 
-  lapMicro = newMicro;
+  lapcenti = newcenti;
   lapSec = newSec;
   lapMin = newMin;
 }
@@ -85,9 +86,9 @@ function startStopwatch() {
 
   // start timer
   intervalID = setInterval(function () {
-    micro++;
-    if (micro == 100) {
-      micro = 0;
+    centi++;
+    if (centi == 100) {
+      centi = 0;
       sec++;
       if (sec == 60) {
         sec = 0;
@@ -95,7 +96,7 @@ function startStopwatch() {
       }
     }
     let txt = document.querySelector(".time-text");
-    let formattedTime = formatTime(min, sec, micro);
+    let formattedTime = formatTime(min, sec, centi);
     txt.innerHTML = formattedTime;
   }, 10);
 }
@@ -107,14 +108,14 @@ function stopStopwatch() {
 
 function lap() {
   let lapText = document.createElement("p");
-  let currentTotalMicro = convertToMicro(min, sec, micro);
-  let prevTotalMicro = convertToMicro(prevMin, prevSec, prevMicro);
-  let totalMicro = currentTotalMicro - prevTotalMicro;
-  convertFromMicro(totalMicro);
-  lapText.innerHTML = formatTime(lapMin, lapSec, lapMicro);
+  let currentTotalcenti = convertTocenti(min, sec, centi);
+  let prevTotalcenti = convertTocenti(prevMin, prevSec, prevcenti);
+  let totalcenti = currentTotalcenti - prevTotalcenti;
+  convertFromcenti(totalcenti);
+  lapText.innerHTML = formatTime(lapMin, lapSec, lapcenti);
   lapContainer.appendChild(lapText);
   // set this time as the new previous times
-  prevMicro = micro;
+  prevcenti = centi;
   prevSec = sec;
   prevMin = min;
 }
@@ -122,10 +123,11 @@ function lap() {
 function reset() {}
 
 function initialize() {
-  buttonContainer = document.querySelector(".button-container");
+  leftButtonContainer = document.querySelector("#left-button-container");
+  rightButtonContainer = document.querySelector("#right-button-container");
   lapContainer = document.querySelector(".lap-container");
-  addButton(lapButton);
-  addButton(startButton);
+  addButton(leftButtonContainer, lapButton);
+  addButton(rightButtonContainer, startButton);
 }
 
 //run functions
