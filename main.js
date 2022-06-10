@@ -53,7 +53,10 @@ function addButton(buttonContainer, button) {
   buttonContainer.appendChild(button);
 }
 
-function removeButton(button) {}
+function removeButton(buttonContainer, button) {
+  // TODO: depending on whether the button is supposed to be on the left or the right, append or insert
+  buttonContainer.removeChild(button);
+}
 
 function formatTime(min, sec, centi) {
   formattedcenti = centi.toString().padStart(2, "0");
@@ -83,7 +86,8 @@ function convertFromcenti(totalcenti) {
 
 function startStopwatch() {
   // replace start button with stop button
-
+  removeButton(rightButtonContainer, startButton);
+  addButton(rightButtonContainer, resetButton);
   // start timer
   intervalID = setInterval(function () {
     centi++;
