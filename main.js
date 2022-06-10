@@ -1,17 +1,10 @@
 // global variables
-// let currTimeMilli;
-let currTime = { time: "curr", min: 0, sec: 0, centi: 0, milli: 0 };
+let currTime;
+let startTime;
+let prevTime;
+let lapTime;
 
-// let startTimeMilli;
-let startTime = { time: "start", min: 0, sec: 0, centi: 0, milli: 0 };
-
-let prevTimeMilli;
-let prevTime = { time: "prev", min: 0, sec: 0, centi: 0, milli: 0 };
-
-let lapTimeCenti;
-let lapTime = { time: "lap", min: 0, sec: 0, centi: 0, milli: 0 };
-
-let totalTimeElapsed = 0;
+let totalTimeElapsed;
 
 let startButton;
 let stopButton;
@@ -22,6 +15,7 @@ let leftButtonContainer;
 let rightButtonContainer;
 let lapContainer;
 let intervalID;
+let timeText;
 
 // start of functions
 function createStartStopButtons() {
@@ -64,7 +58,6 @@ function formatTime(timeObject) {
 }
 
 function convertTocenti(timeObject) {
-  console.log(timeObject);
   let minToSec = timeObject.min * 60;
   let secTocenti = (timeObject.sec + minToSec) * 100;
   let totalcenti = secTocenti + timeObject.centi;
@@ -93,9 +86,7 @@ function startStopwatch() {
   intervalID = setInterval(function () {
     currTime.milli = Date.now() - startTime.milli + totalTimeElapsed;
     convertFromcenti(currTime);
-    let txt = document.querySelector(".time-text");
-    let formattedTime = formatTime(currTime);
-    txt.innerHTML = formattedTime;
+    displayTime(formatTime(currTime));
   }, 10);
 }
 
@@ -113,9 +104,12 @@ function stopStopwatch() {
   addButton(rightButtonContainer, startButton);
 }
 
+function displayTime(formattedTime) {
+  timeText.innerHTML = formattedTime;
+}
+
 function lap() {
   let lapText = document.createElement("p");
-  console.log(prevTime, currTime);
   lapTime.milli = currTime.milli - prevTime.milli;
   convertFromcenti(lapTime);
   lapText.innerHTML = formatTime(lapTime);
@@ -126,10 +120,26 @@ function lap() {
 
 function reset() {
   //reset the current and previous timestamps
+  resetTimeObjects();
+  //display 00:00.00 on the timer
+  displayTime(formatTime(currTime));
   //remove all laps
+  while (lapContainer.firstChild) {
+    lapContainer.removeChild(lapContainer.lastChild);
+  }
+}
+
+function resetTimeObjects() {
+  currTime = { time: "curr", min: 0, sec: 0, centi: 0, milli: 0 };
+  startTime = { time: "start", min: 0, sec: 0, centi: 0, milli: 0 };
+  prevTime = { time: "prev", min: 0, sec: 0, centi: 0, milli: 0 };
+  lapTime = { time: "lap", min: 0, sec: 0, centi: 0, milli: 0 };
+  totalTimeElapsed = 0;
 }
 
 function initialize() {
+  resetTimeObjects();
+  timeText = document.querySelector(".time-text");
   leftButtonContainer = document.querySelector("#left-button-container");
   rightButtonContainer = document.querySelector("#right-button-container");
   lapContainer = document.querySelector(".lap-container");
