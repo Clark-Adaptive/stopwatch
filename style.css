@@ -33,7 +33,7 @@
   overflow: auto;
   height: 40vh;
   width: 100%;
-  justify-content: space-around;
+  justify-content: start;
   align-items: center;
   margin: auto;
   background: lightgreen;

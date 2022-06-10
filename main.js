@@ -1,19 +1,17 @@
 // global variables
-let centi = 0;
-let sec = 0;
-let min = 0;
+// let currTimeMilli;
+let currTime = { time: "curr", min: 0, sec: 0, centi: 0, milli: 0 };
 
-let prevcenti = 0;
-let prevSec = 0;
-let prevMin = 0;
+// let startTimeMilli;
+let startTime = { time: "start", min: 0, sec: 0, centi: 0, milli: 0 };
 
-let lapcenti = 0;
-let lapSec = 0;
-let lapMin = 0;
+let prevTimeMilli;
+let prevTime = { time: "prev", min: 0, sec: 0, centi: 0, milli: 0 };
 
-let formattedcenti;
-let formattedMin;
-let formattedSec;
+let lapTimeCenti;
+let lapTime = { time: "lap", min: 0, sec: 0, centi: 0, milli: 0 };
+
+let totalTimeElapsed = 0;
 
 let startButton;
 let stopButton;
@@ -58,30 +56,29 @@ function removeButton(buttonContainer) {
   buttonContainer.removeChild(buttonContainer.firstChild);
 }
 
-function formatTime(min, sec, centi) {
-  formattedcenti = centi.toString().padStart(2, "0");
-  formattedSec = sec.toString().padStart(2, "0");
-  formattedMin = min.toString().padStart(2, "0");
+function formatTime(timeObject) {
+  formattedcenti = timeObject.centi.toString().padStart(2, "0");
+  formattedSec = timeObject.sec.toString().padStart(2, "0");
+  formattedMin = timeObject.min.toString().padStart(2, "0");
   return `${formattedMin} : ${formattedSec} : ${formattedcenti}`;
 }
 
-function convertTocenti(min, sec, centi) {
-  let minToSec = min * 60;
-  let secTocenti = (sec + minToSec) * 100;
-  let totalcenti = secTocenti + centi;
+function convertTocenti(timeObject) {
+  console.log(timeObject);
+  let minToSec = timeObject.min * 60;
+  let secTocenti = (timeObject.sec + minToSec) * 100;
+  let totalcenti = secTocenti + timeObject.centi;
   return totalcenti;
 }
 
-function convertFromcenti(totalcenti) {
-  let newMin = Math.floor(totalcenti / 6000);
-  totalcenti -= newMin * 6000; // 1
-  let newSec = Math.floor(totalcenti / 100);
-  totalcenti -= newSec * 100; // 1
-  let newcenti = totalcenti; // 35
-
-  lapcenti = newcenti;
-  lapSec = newSec;
-  lapMin = newMin;
+function convertFromcenti(timeObject) {
+  let totalCenti;
+  totalCenti = Math.floor(timeObject.milli / 10);
+  timeObject.min = Math.floor(totalCenti / 6000);
+  totalCenti -= timeObject.min * 6000;
+  timeObject.sec = Math.floor(totalCenti / 100);
+  totalCenti -= timeObject.sec * 100;
+  timeObject.centi = totalCenti;
 }
 
 function startStopwatch() {
@@ -92,23 +89,19 @@ function startStopwatch() {
   removeButton(leftButtonContainer);
   addButton(leftButtonContainer, lapButton);
   // start timer
+  startTime.milli = Date.now();
   intervalID = setInterval(function () {
-    centi++;
-    if (centi == 100) {
-      centi = 0;
-      sec++;
-      if (sec == 60) {
-        sec = 0;
-        min++;
-      }
-    }
+    currTime.milli = Date.now() - startTime.milli + totalTimeElapsed;
+    convertFromcenti(currTime);
     let txt = document.querySelector(".time-text");
-    let formattedTime = formatTime(min, sec, centi);
+    let formattedTime = formatTime(currTime);
     txt.innerHTML = formattedTime;
   }, 10);
 }
 
 function stopStopwatch() {
+  // you have to subtract totalTimeElapsed because we only add the time that has elapsed since the last time the start button was pressed
+  totalTimeElapsed += currTime.milli - totalTimeElapsed;
   // stop the repeating interval
   clearInterval(intervalID);
   //replace the lap button with reset button ONLY if
@@ -122,19 +115,19 @@ function stopStopwatch() {
 
 function lap() {
   let lapText = document.createElement("p");
-  let currentTotalcenti = convertTocenti(min, sec, centi);
-  let prevTotalcenti = convertTocenti(prevMin, prevSec, prevcenti);
-  let totalcenti = currentTotalcenti - prevTotalcenti;
-  convertFromcenti(totalcenti);
-  lapText.innerHTML = formatTime(lapMin, lapSec, lapcenti);
+  console.log(prevTime, currTime);
+  lapTime.milli = currTime.milli - prevTime.milli;
+  convertFromcenti(lapTime);
+  lapText.innerHTML = formatTime(lapTime);
   lapContainer.appendChild(lapText);
   // set this time as the new previous times
-  prevcenti = centi;
-  prevSec = sec;
-  prevMin = min;
+  prevTime.milli = currTime.milli;
 }
 
-function reset() {}
+function reset() {
+  //reset the current and previous timestamps
+  //remove all laps
+}
 
 function initialize() {
   leftButtonContainer = document.querySelector("#left-button-container");
