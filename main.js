@@ -34,6 +34,11 @@ function createStartStopButtons() {
   lapButton.classList.add("apple-button");
   resetButton.classList.add("apple-button");
 
+  startButton.style.backgroundColor = "rgb(48, 209, 88, .2)";
+  stopButton.style.backgroundColor = "rgb(255, 69, 58, .2)";
+  lapButton.style.backgroundColor = "rgb(142, 142, 147, .2)";
+  resetButton.style.backgroundColor = "rgb(142, 142, 147, .2)";
+
   startButton.addEventListener("click", startStopwatch);
   stopButton.addEventListener("click", stopStopwatch);
   lapButton.addEventListener("click", lap);

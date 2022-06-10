@@ -1,10 +1,16 @@
-.content-container {
+body {
+  background: black;
+  color: white;
   display: flex;
-  width: 100vw;
-  height: 100vh;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
+  font-family: "SF Pro Text";
+}
+.content-container {
+  width: 100%;
+  height: 100%;
+  max-width: 390px;
+  max-height: 844px;
+  /* background: teal; */
 }
 
 .time-container {
@@ -13,7 +19,6 @@
   justify-content: center;
   align-items: center;
   margin: auto;
-  background: lightblue;
   text-align: center;
 }
 
@@ -24,7 +29,7 @@
   justify-content: space-around;
   align-items: center;
   margin: auto;
-  background: darkblue;
+  max-width: 50vw;
 }
 
 .lap-container {
@@ -36,18 +41,21 @@
   justify-content: start;
   align-items: center;
   margin: auto;
-  background: lightgreen;
 }
 
 .time-text {
-  font-size: 4em;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 72px;
+  /* font-size: 10vw; */
+  line-height: 78px;
 }
 
 .apple-button {
   /* 🌝 Button / iPhone / Apple Round */
 
   /* Auto layout */
-
+  color: white;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -56,7 +64,6 @@
 
   width: 78px;
   height: 78px;
-
   /* iPhone & iPad/🌝 Background/Primary */
   background: #ffffff;
   border-radius: 43px;
@@ -66,4 +73,14 @@
   flex: none;
   order: 2;
   flex-grow: 0;
+}
+
+@media (max-width: 400px) {
+  .apple-button {
+    width: 50px;
+    height: 50px;
+  }
+  .time-text {
+    font-size: 18vw;
+  }
 }
