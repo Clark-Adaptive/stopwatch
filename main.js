@@ -53,9 +53,9 @@ function addButton(buttonContainer, button) {
   buttonContainer.appendChild(button);
 }
 
-function removeButton(buttonContainer, button) {
+function removeButton(buttonContainer) {
   // TODO: depending on whether the button is supposed to be on the left or the right, append or insert
-  buttonContainer.removeChild(button);
+  buttonContainer.removeChild(buttonContainer.firstChild);
 }
 
 function formatTime(min, sec, centi) {
@@ -86,8 +86,11 @@ function convertFromcenti(totalcenti) {
 
 function startStopwatch() {
   // replace start button with stop button
-  removeButton(rightButtonContainer, startButton);
-  addButton(rightButtonContainer, resetButton);
+  removeButton(rightButtonContainer);
+  addButton(rightButtonContainer, stopButton);
+  //replace the reset button with lap button EXCEPT in the beginning where it is default lap, but because I coded removeButton() to remove the first childnode of the button container, it still works
+  removeButton(leftButtonContainer);
+  addButton(leftButtonContainer, lapButton);
   // start timer
   intervalID = setInterval(function () {
     centi++;
@@ -108,6 +111,13 @@ function startStopwatch() {
 function stopStopwatch() {
   // stop the repeating interval
   clearInterval(intervalID);
+  //replace the lap button with reset button ONLY if
+  removeButton(leftButtonContainer);
+  addButton(leftButtonContainer, resetButton);
+
+  //replace the stop button with start button
+  removeButton(rightButtonContainer);
+  addButton(rightButtonContainer, startButton);
 }
 
 function lap() {
