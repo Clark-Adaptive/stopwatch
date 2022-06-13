@@ -59,7 +59,7 @@ function formatTime(timeObject) {
   formattedcenti = timeObject.centi.toString().padStart(2, "0");
   formattedSec = timeObject.sec.toString().padStart(2, "0");
   formattedMin = timeObject.min.toString().padStart(2, "0");
-  return `${formattedMin} : ${formattedSec} : ${formattedcenti}`;
+  return `${formattedMin}:${formattedSec}.${formattedcenti}`;
 }
 
 function convertTocenti(timeObject) {
@@ -114,13 +114,15 @@ function displayTime(formattedTime) {
 }
 
 function lap() {
-  let lapText = document.createElement("p");
+  // calculate lap time
   lapTime.milli = currTime.milli - prevTime.milli;
   convertFromcenti(lapTime);
-  lapText.innerHTML = formatTime(lapTime);
-  lapContainer.appendChild(lapText);
   // set this time as the new previous times
   prevTime.milli = currTime.milli;
+  // create the dom element and append to the list of laps
+  let lapText = document.createElement("p");
+  lapText.innerHTML = formatTime(lapTime);
+  lapContainer.appendChild(lapText);
 }
 
 function reset() {
