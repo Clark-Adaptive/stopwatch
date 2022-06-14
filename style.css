@@ -47,6 +47,14 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+.max-lap {
+  color: rgb(48, 209, 88);
+}
+
+.min-lap {
+  color: rgb(255, 69, 58);
+}
+
 .row-container {
   display: flex;
   justify-content: space-between;

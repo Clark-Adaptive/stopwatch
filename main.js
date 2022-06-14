@@ -5,8 +5,12 @@ let prevTime;
 let lapTime;
 
 let totalTimeElapsed;
-//array of lap times
-let laps;
+
+let numLaps;
+let longestLap;
+let shortestLap;
+let $prevMaxLap;
+let $prevMinLap;
 
 let startButton;
 let stopButton;
@@ -137,17 +141,58 @@ function displayTime(formattedTime) {
 function createLapRow() {
   let rowContainer = document.createElement("div");
   let lapNumber = document.createElement("p");
-  let lapTime = document.createElement("p");
+  let lapTimeText = document.createElement("p");
 
-  lapNumber.innerHTML = `Lap ${laps.length}`;
-  lapTime.innerHTML = laps[laps.length - 1];
-  lapTime.classList.add("lap-time");
+  lapNumber.innerHTML = `Lap ${numLaps}`;
+  lapTimeText.innerHTML = convertTocenti(lapTime);
+  lapTimeText.classList.add("lap-time");
 
   rowContainer.classList.add("row-container");
   rowContainer.appendChild(lapNumber);
-  rowContainer.appendChild(lapTime);
+  rowContainer.appendChild(lapTimeText);
 
   lapContainer.appendChild(rowContainer);
+}
+
+function checkMinMaxLap() {
+  let nodes = document.querySelectorAll(".row-container");
+  let lapRowContainer = nodes[nodes.length - 1];
+  let currLapTime = convertTocenti(lapTime);
+  console.log(numLaps, shortestLap, longestLap);
+  if (numLaps <= 2) {
+    if (currLapTime > longestLap) {
+      longestLap = currLapTime;
+      $prevMaxLap = lapRowContainer;
+      console.log("max", $prevMaxLap);
+    }
+    if (currLapTime < shortestLap) {
+      shortestLap = currLapTime;
+      $prevMinLap = lapRowContainer;
+      console.log("min", $prevMinLap);
+    }
+    if (numLaps == 2) {
+      $prevMaxLap.classList.add("max-lap");
+      $prevMinLap.classList.add("min-lap");
+    }
+  } else {
+    if (currLapTime > longestLap) {
+      //set new longestLap to be current lap time
+      longestLap = currLapTime;
+      // paint this lap green
+      lapRowContainer.classList.add("max-lap");
+      //remove green paint form the previous longest lap
+      $prevMaxLap.classList.remove("max-lap");
+      $prevMaxLap = lapRowContainer;
+    } else if (currLapTime < shortestLap) {
+      //set new shortestLap to be current lap time
+      shortestLap = currLapTime;
+      // paint this lap red
+      lapRowContainer.classList.add("min-lap");
+      // remove red paint from the previous shortest lap
+      $prevMinLap.classList.remove("min-lap");
+      $prevMinLap = lapRowContainer;
+    }
+  }
 }
 
 function lap() {
@@ -156,16 +201,14 @@ function lap() {
   }
   // reset previous time to be the curren time so we can calculate the next lap time
   prevTime.milli = currTime.milli;
-  //add the centiseconds of the lap to the array to keep track of max and min
-  laps[laps.length - 1] = convertTocenti(lapTime);
-  console.log(laps);
-  // push new lap onto array
-  laps.push("00:00.00");
   //create html dom element to display lap
+  checkMinMaxLap();
+  numLaps++;
   createLapRow();
 }
 
 function reset() {
+  numLaps = 1;
   //reset the current and previous timestamps
   resetTimeObjects();
   //display 00:00.00 on the timer
@@ -174,9 +217,6 @@ function reset() {
   while (lapContainer.firstChild) {
     lapContainer.removeChild(lapContainer.lastChild);
   }
-  //reset laps array
-  laps = [];
-  laps.push("00:00.00");
 }
 
 function resetTimeObjects() {
@@ -188,9 +228,10 @@ function resetTimeObjects() {
 }
 
 function initialize() {
+  numLaps = 1;
+  longestLap = Number.NEGATIVE_INFINITY;
+  shortestLap = Number.POSITIVE_INFINITY;
   resetTimeObjects();
-  laps = [];
-  laps.push("00:00.00");
   timeText = document.querySelector(".time-text");
   leftButtonContainer = document.querySelector("#left-button-container");
   rightButtonContainer = document.querySelector("#right-button-container");
