@@ -5,6 +5,8 @@ let prevTime;
 let lapTime;
 
 let totalTimeElapsed;
+//array of lap times
+let laps;
 
 let startButton;
 let stopButton;
@@ -89,9 +91,14 @@ function startStopwatch() {
   // start timer
   startTime.milli = Date.now();
   intervalID = setInterval(function () {
+    //display current time
     currTime.milli = Date.now() - startTime.milli + totalTimeElapsed;
     convertFromcenti(currTime);
     displayTime(formatTime(currTime));
+    //also want to display current lap time
+    lapTime.milli = currTime.milli - prevTime.milli;
+    convertFromcenti(lapTime);
+    displayLapTime(formatTime(lapTime));
   }, 10);
 }
 
@@ -109,20 +116,45 @@ function stopStopwatch() {
   addButton(rightButtonContainer, startButton);
 }
 
+function displayLapTime(formattedTime) {
+  if (!lapContainer.hasChildNodes()) {
+    createLapRow();
+  }
+  let nodes = document.querySelectorAll(".lap-time");
+  let lapTime = nodes[nodes.length - 1];
+  lapTime.innerHTML = formattedTime;
+}
+
 function displayTime(formattedTime) {
   timeText.innerHTML = formattedTime;
 }
 
+function createLapRow() {
+  let rowContainer = document.createElement("div");
+  let lapNumber = document.createElement("p");
+  let lapTime = document.createElement("p");
+
+  lapNumber.innerHTML = `Lap ${laps.length}`;
+  lapTime.innerHTML = laps[laps.length - 1];
+  lapTime.classList.add("lap-time");
+
+  rowContainer.classList.add("row-container");
+  rowContainer.appendChild(lapNumber);
+  rowContainer.appendChild(lapTime);
+
+  lapContainer.appendChild(rowContainer);
+}
+
 function lap() {
-  // calculate lap time
-  lapTime.milli = currTime.milli - prevTime.milli;
-  convertFromcenti(lapTime);
-  // set this time as the new previous times
+  // reset previous time to be the curren time so we can calculate the next lap time
   prevTime.milli = currTime.milli;
-  // create the dom element and append to the list of laps
-  let lapText = document.createElement("p");
-  lapText.innerHTML = formatTime(lapTime);
-  lapContainer.appendChild(lapText);
+  //add the centiseconds of the lap to the array to keep track of max and min
+  laps[laps.length - 1] = convertTocenti(lapTime);
+  console.log(laps);
+  // push new lap onto array
+  laps.push("00:00.00");
+  //create html dom element to display lap
+  createLapRow();
 }
 
 function reset() {
@@ -134,6 +166,9 @@ function reset() {
   while (lapContainer.firstChild) {
     lapContainer.removeChild(lapContainer.lastChild);
   }
+  //reset laps array
+  laps = [];
+  laps.push("00:00.00");
 }
 
 function resetTimeObjects() {
@@ -146,6 +181,8 @@ function resetTimeObjects() {
 
 function initialize() {
   resetTimeObjects();
+  laps = [];
+  laps.push("00:00.00");
   timeText = document.querySelector(".time-text");
   leftButtonContainer = document.querySelector("#left-button-container");
   rightButtonContainer = document.querySelector("#right-button-container");

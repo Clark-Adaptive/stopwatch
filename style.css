@@ -34,13 +34,23 @@ body {
 
 .lap-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   overflow: auto;
   height: 40vh;
   width: 100%;
   justify-content: start;
   align-items: center;
   margin: auto;
+}
+
+.lap-time {
+  font-variant-numeric: tabular-nums;
+}
+
+.row-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .time-text {
