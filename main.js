@@ -13,6 +13,9 @@ let stopButton;
 let lapButton;
 let resetButton;
 
+//boolean that determines if the stopwatch has started or not
+let hasStarted;
+
 let leftButtonContainer;
 let rightButtonContainer;
 let lapContainer;
@@ -82,6 +85,7 @@ function convertFromcenti(timeObject) {
 }
 
 function startStopwatch() {
+  hasStarted = true;
   // replace start button with stop button
   removeButton(rightButtonContainer);
   addButton(rightButtonContainer, stopButton);
@@ -103,6 +107,7 @@ function startStopwatch() {
 }
 
 function stopStopwatch() {
+  hasStarted = false;
   // you have to subtract totalTimeElapsed because we only add the time that has elapsed since the last time the start button was pressed
   totalTimeElapsed += currTime.milli - totalTimeElapsed;
   // stop the repeating interval
@@ -121,8 +126,8 @@ function displayLapTime(formattedTime) {
     createLapRow();
   }
   let nodes = document.querySelectorAll(".lap-time");
-  let lapTime = nodes[nodes.length - 1];
-  lapTime.innerHTML = formattedTime;
+  let lapTimeText = nodes[nodes.length - 1];
+  lapTimeText.innerHTML = formattedTime;
 }
 
 function displayTime(formattedTime) {
@@ -146,6 +151,9 @@ function createLapRow() {
 }
 
 function lap() {
+  if (!hasStarted) {
+    return;
+  }
   // reset previous time to be the curren time so we can calculate the next lap time
   prevTime.milli = currTime.milli;
   //add the centiseconds of the lap to the array to keep track of max and min
