@@ -88,6 +88,11 @@ function convertFromcenti(timeObject) {
   timeObject.centi = totalCenti;
 }
 
+// function displayTime(milliseconds) {
+//   // ? convert milliseconds
+//   return `${minutes}:${seconds}.${centiseconds}`;
+// }
+
 function startStopwatch() {
   hasStarted = true;
   // replace start button with stop button
@@ -139,7 +144,7 @@ function displayTime(formattedTime) {
 }
 
 function createLapRow() {
-  let rowContainer = document.createElement("div");
+  let rowContainer = document.createElement("li");
   let lapNumber = document.createElement("p");
   let lapTimeText = document.createElement("p");
 
@@ -209,6 +214,10 @@ function lap() {
 
 function reset() {
   numLaps = 1;
+  $prevMaxLap = null;
+  $prevMaxLap = null;
+  longestLap = Number.NEGATIVE_INFINITY;
+  shortestLap = Number.POSITIVE_INFINITY;
   //reset the current and previous timestamps
   resetTimeObjects();
   //display 00:00.00 on the timer
