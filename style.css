@@ -34,11 +34,12 @@ body {
 }
 
 .lap-container {
-  padding: 0;
   overflow: auto;
   height: 500px;
   max-height: 500px;
-  width: 80%;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 90%;
 }
 
 .lap-time {
@@ -90,6 +91,18 @@ body {
   flex: none;
   order: 2;
   flex-grow: 0;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background-color: black;
+  border-radius: 100px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: grey;
+  border-radius: 100px;
 }
 
 @media (max-width: 400px) {

@@ -135,7 +135,8 @@ function displayLapTime(formattedTime) {
     createLapRow();
   }
   let nodes = document.querySelectorAll(".lap-time");
-  let lapTimeText = nodes[nodes.length - 1];
+  let lapTimeText = nodes[0];
+  // let lapTimeText = nodes[nodes.length - 1];
   lapTimeText.innerHTML = formattedTime;
 }
 
@@ -156,12 +157,17 @@ function createLapRow() {
   rowContainer.appendChild(lapNumber);
   rowContainer.appendChild(lapTimeText);
 
-  lapContainer.appendChild(rowContainer);
+  if (!lapContainer.hasChildNodes()) {
+    lapContainer.appendChild(rowContainer);
+  } else {
+    lapContainer.insertBefore(rowContainer, lapContainer.children[0]);
+  }
 }
 
 function checkMinMaxLap() {
   let nodes = document.querySelectorAll(".row-container");
-  let lapRowContainer = nodes[nodes.length - 1];
+  // let lapRowContainer = nodes[nodes.length - 1];
+  let lapRowContainer = nodes[0];
   let currLapTime = convertTocenti(lapTime);
   console.log(numLaps, shortestLap, longestLap);
   if (numLaps <= 2) {
