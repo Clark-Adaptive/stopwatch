@@ -38,15 +38,10 @@ function createStartStopButtons() {
   lapButton.innerHTML = "Lap";
   resetButton.innerHTML = "Reset";
 
-  startButton.classList.add("apple-button");
-  stopButton.classList.add("apple-button");
-  lapButton.classList.add("apple-button");
-  resetButton.classList.add("apple-button");
-
-  startButton.style.backgroundColor = "rgb(48, 209, 88, .2)";
-  stopButton.style.backgroundColor = "rgb(255, 69, 58, .2)";
-  lapButton.style.backgroundColor = "rgb(142, 142, 147, .2)";
-  resetButton.style.backgroundColor = "rgb(142, 142, 147, .2)";
+  startButton.classList.add("apple-button", "start-button");
+  stopButton.classList.add("apple-button", "stop-button");
+  lapButton.classList.add("apple-button", "lap-button");
+  resetButton.classList.add("apple-button", "reset-button");
 
   startButton.addEventListener("click", startStopwatch);
   stopButton.addEventListener("click", stopStopwatch);

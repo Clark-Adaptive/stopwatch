@@ -48,11 +48,11 @@ body {
 }
 
 .max-lap {
-  color: rgb(48, 209, 88);
+  color: rgb(255, 69, 58);
 }
 
 .min-lap {
-  color: rgb(255, 69, 58);
+  color: rgb(48, 209, 88);
 }
 
 .row-container {
@@ -92,6 +92,19 @@ body {
   flex: none;
   order: 2;
   flex-grow: 0;
+}
+
+.start-button {
+  background: rgb(48, 209, 88, 0.2);
+}
+
+.stop-button {
+  background: rgb(255, 69, 58, 0.2);
+}
+
+.lap-button,
+.reset-button {
+  background: rgb(142, 142, 147, 0.2);
 }
 
 ::-webkit-scrollbar {
