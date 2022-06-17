@@ -24,8 +24,8 @@ let intervalID;
 
 function initializeButtons() {
   createStartStopButtons();
-  addButton($leftButtonContainer, $lapButton);
-  addButton($rightButtonContainer, $startButton);
+  replaceButton($leftButtonContainer, $lapButton);
+  replaceButton($rightButtonContainer, $startButton);
 }
 
 function resetButtons() {}
@@ -55,14 +55,11 @@ function createStartStopButtons() {
   $resetButton.addEventListener("click", reset);
 }
 
-function addButton(buttonContainer, button) {
-  // TODO: depending on whether the button is supposed to be on the left or the right, append or insert
+function replaceButton(buttonContainer, button) {
+  if (buttonContainer.hasChildNodes()) {
+    buttonContainer.removeChild(buttonContainer.firstChild);
+  }
   buttonContainer.appendChild(button);
-}
-
-function removeButton(buttonContainer) {
-  // TODO: depending on whether the button is supposed to be on the left or the right, append or insert
-  buttonContainer.removeChild(buttonContainer.firstChild);
 }
 
 function stopStopwatch() {
@@ -72,19 +69,14 @@ function stopStopwatch() {
   updateTotalTimeElapsed();
   clearInterval(intervalID);
 
-  removeButton($leftButtonContainer);
-  addButton($leftButtonContainer, $resetButton);
-
-  removeButton($rightButtonContainer);
-  addButton($rightButtonContainer, $startButton);
+  replaceButton($leftButtonContainer, $resetButton);
+  replaceButton($rightButtonContainer, $startButton);
 }
 
 function startStopwatch() {
   hasStarted = true;
-  removeButton($rightButtonContainer);
-  addButton($rightButtonContainer, $stopButton);
-  removeButton($leftButtonContainer);
-  addButton($leftButtonContainer, $lapButton);
+  replaceButton($rightButtonContainer, $stopButton);
+  replaceButton($leftButtonContainer, $lapButton);
   // start timer
   startTime.milli = Date.now();
   intervalID = setInterval(function () {
