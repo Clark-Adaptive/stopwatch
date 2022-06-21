@@ -72,17 +72,14 @@ function checkMinMaxLap() {
   let nodes = document.querySelectorAll(".row-container");
   let lapRowContainer = nodes[0];
   let currLapTime = convertTocenti(lapTime);
-  console.log(numLaps, shortestLapTime, longestLapTime);
   if (numLaps <= 2) {
     if (currLapTime > longestLapTime) {
       longestLapTime = currLapTime;
       $prevMaxLap = lapRowContainer;
-      console.log("max", $prevMaxLap);
     }
     if (currLapTime < shortestLapTime) {
       shortestLapTime = currLapTime;
       $prevMinLap = lapRowContainer;
-      console.log("min", $prevMinLap);
     }
     if (numLaps == 2) {
       $prevMaxLap.classList.add("max-lap");

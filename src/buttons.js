@@ -49,10 +49,10 @@ function createStartStopButtons() {
   $lapButton.classList.add("apple-button", "lap-button");
   $resetButton.classList.add("apple-button", "reset-button");
 
-  $startButton.addEventListener("click", startStopwatch);
-  $stopButton.addEventListener("click", stopStopwatch);
-  $lapButton.addEventListener("click", lap);
-  $resetButton.addEventListener("click", reset);
+  $startButton.onclick = startStopwatch;
+  $stopButton.onclick = stopStopwatch;
+  $lapButton.onclick = lap;
+  $resetButton.onclick = reset;
 }
 
 function replaceButton(buttonContainer, button) {
@@ -64,8 +64,6 @@ function replaceButton(buttonContainer, button) {
 
 function stopStopwatch() {
   hasStarted = false;
-  // you have to subtract totalTimeElapsed because we only add the time that has elapsed since the last time the start button was pressed
-  // totalTimeElapsed += currTime.milli - totalTimeElapsed;
   updateTotalTimeElapsed();
   clearInterval(intervalID);
 
@@ -87,7 +85,7 @@ function startStopwatch() {
     lapTime.milli = currTime.milli - prevTime.milli;
     convertFromcenti(lapTime);
     displayLapTime(formatTime(lapTime));
-  }, 10);
+  }, 1000 / 60);
 }
 
 export { initializeButtons, resetButtons, hasStarted };
