@@ -8,12 +8,25 @@ let longestLapTime;
 let shortestLapTime;
 
 let numLaps;
+// make a variable for the number of laps that fit on the screen to help with creating empty table with lines
+let numLapsThatFitOnScreen;
+let rowHeight;
 
 function initializeLaps() {
   numLaps = 1;
   longestLapTime = Number.NEGATIVE_INFINITY;
   shortestLapTime = Number.POSITIVE_INFINITY;
   $lapContainer = document.querySelector(".lap-container");
+  fillTableWithEmptyRows();
+}
+
+function fillTableWithEmptyRows() {
+  numLapsThatFitOnScreen = Math.floor(
+    (rowHeight = $lapContainer.offsetHeight / createEmptyRow().offsetHeight)
+  );
+  for (let a = 0; a < numLapsThatFitOnScreen - 1; a++) {
+    createEmptyRow();
+  }
 }
 
 function resetLaps() {
@@ -26,6 +39,7 @@ function resetLaps() {
   while ($lapContainer.firstChild) {
     $lapContainer.removeChild($lapContainer.lastChild);
   }
+  fillTableWithEmptyRows();
 }
 
 function lap() {
@@ -40,12 +54,26 @@ function lap() {
 }
 
 function displayLapTime(formattedTime) {
-  if (!$lapContainer.hasChildNodes()) {
-    createLapRow();
-  }
   let nodes = document.querySelectorAll(".lap-time");
   let $lapTimeText = nodes[0];
   $lapTimeText.innerHTML = formattedTime;
+}
+
+function createEmptyRow() {
+  // this function is used so we can get the height of the row to determine how many rows we can fit onto the table initially to draw the lines
+  let rowContainer = document.createElement("li");
+  let lapNumber = document.createElement("p");
+  let lapTimeText = document.createElement("p");
+
+  lapNumber.innerHTML = "_";
+  lapTimeText.innerHTML = "_";
+  lapTimeText.classList.add("lap-time");
+
+  rowContainer.classList.add("row-container", "blank-row");
+  rowContainer.appendChild(lapNumber);
+  rowContainer.appendChild(lapTimeText);
+  $lapContainer.appendChild(rowContainer);
+  return rowContainer;
 }
 
 function createLapRow() {
@@ -61,10 +89,10 @@ function createLapRow() {
   rowContainer.appendChild(lapNumber);
   rowContainer.appendChild(lapTimeText);
 
-  if (!$lapContainer.hasChildNodes()) {
-    $lapContainer.appendChild(rowContainer);
-  } else {
-    $lapContainer.insertBefore(rowContainer, $lapContainer.children[0]);
+  $lapContainer.insertBefore(rowContainer, $lapContainer.children[0]);
+  if (numLaps <= numLapsThatFitOnScreen) {
+    // remove one of the rows form the bottom
+    $lapContainer.removeChild($lapContainer.lastChild);
   }
 }
 
@@ -100,4 +128,11 @@ function checkMinMaxLap() {
   }
 }
 
-export { initializeLaps, resetLaps, lap, displayLapTime };
+export {
+  initializeLaps,
+  resetLaps,
+  lap,
+  displayLapTime,
+  createLapRow,
+  numLaps,
+};

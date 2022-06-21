@@ -3,6 +3,7 @@ body {
   display: flex;
   justify-content: center;
   font-family: "SF Pro Text";
+  user-select: none;
 }
 .content-container {
   background: black;
@@ -61,6 +62,10 @@ body {
   width: 100%;
   border-top: 1px solid rgba(128, 128, 128, 0.725);
   line-height: 12px;
+}
+
+.blank-row {
+  color: black;
 }
 
 .time-text {
