@@ -128,11 +128,10 @@ function checkMinMaxLap() {
   }
 }
 
-export {
-  initializeLaps,
-  resetLaps,
-  lap,
-  displayLapTime,
-  createLapRow,
-  numLaps,
-};
+function handleFirstLap() {
+  if (numLaps == 1) {
+    createLapRow();
+  }
+}
+
+export { initializeLaps, resetLaps, lap, displayLapTime, handleFirstLap };

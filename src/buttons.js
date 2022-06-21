@@ -1,4 +1,4 @@
-import { lap, displayLapTime, createLapRow, numLaps } from "./laps.js";
+import { lap, displayLapTime, handleFirstLap } from "./laps.js";
 import { reset } from "./main.js";
 import {
   convertFromcenti,
@@ -75,9 +75,7 @@ function startStopwatch() {
   hasStarted = true;
   replaceButton($rightButtonContainer, $stopButton);
   replaceButton($leftButtonContainer, $lapButton);
-  if (numLaps == 1) {
-    createLapRow();
-  }
+  handleFirstLap();
   // start timer
   startTime.milli = Date.now();
   intervalID = setInterval(function () {
