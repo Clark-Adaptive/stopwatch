@@ -10,7 +10,6 @@ let shortestLapTime;
 let numLaps;
 // make a variable for the number of laps that fit on the screen to help with creating empty table with lines
 let numLapsThatFitOnScreen;
-let rowHeight;
 
 function initializeLaps() {
   numLaps = 1;
@@ -22,7 +21,7 @@ function initializeLaps() {
 
 function fillTableWithEmptyRows() {
   numLapsThatFitOnScreen = Math.floor(
-    (rowHeight = $lapContainer.offsetHeight / createEmptyRow().offsetHeight)
+    $lapContainer.offsetHeight / createEmptyRow().offsetHeight
   );
   for (let a = 0; a < numLapsThatFitOnScreen - 1; a++) {
     createEmptyRow();
