@@ -128,7 +128,8 @@ function checkMinMaxLap() {
 }
 
 function handleFirstLap() {
-  if (numLaps == 1) {
+  //TODO: add condition that the lapContainer needs to have less than 1 lap
+  if (numLaps == 1 && currTime.milli == 0) {
     createLapRow();
   }
 }
